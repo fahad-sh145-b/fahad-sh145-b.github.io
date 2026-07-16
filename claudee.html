@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shaikh Bashiruddin — Backend Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B1F27;
+    --ink-soft:#232833;
+    --ink-softer:#2B303C;
+    --paper:#EDEBE4;
+    --paper-dim:#A9A9A0;
+    --teal:#5FB3A3;
+    --amber:#E8A23D;
+    --line: rgba(237,235,228,0.10);
+    --line-strong: rgba(237,235,228,0.18);
+    --radius: 3px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--teal); color:var(--ink); }
+
+  .wrap{ max-width:920px; margin:0 auto; padding:0 28px; }
+
+  a{ color:inherit; text-decoration:none; }
+
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.01em; }
+
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:20;
+    background:rgba(27,31,39,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:flex-end;
+    height:60px;
+  }
+  .brand{ font-family:'JetBrains Mono', monospace; font-size:0.95rem; font-weight:500; }
+  .brand span{ color:var(--teal); }
+  .navlinks{ display:flex; gap:28px; font-size:0.88rem; font-family:'JetBrains Mono', monospace; }
+  .navlinks a{ color:var(--paper-dim); transition:color .15s ease; }
+  .navlinks a:hover{ color:var(--paper); }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:88px 0 64px; border-bottom:1px solid var(--line); }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem;
+    color:var(--teal);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:22px;
+  }
+  .dot{ width:7px; height:7px; border-radius:50%; background:var(--teal); display:inline-block; box-shadow:0 0 0 3px rgba(95,179,163,0.18); }
+
+  .hero-grid{ display:grid; grid-template-columns:1.1fr 1fr; gap:40px; align-items:start; }
+  @media (max-width:760px){ .hero-grid{ grid-template-columns:1fr; } }
+
+  .hero h1{ font-size:2.6rem; font-weight:700; line-height:1.08; margin-bottom:16px; }
+  .hero .lede{ color:var(--paper-dim); font-size:1.05rem; max-width:46ch; margin-bottom:26px; }
+
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.85rem;
+    padding:11px 18px;
+    border-radius:var(--radius);
+    border:1px solid var(--line-strong);
+    display:inline-flex; align-items:center; gap:8px;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .btn.primary{ background:var(--teal); color:var(--ink); border-color:var(--teal); font-weight:600; }
+  .btn.primary:hover{ background:#71c2b3; }
+  .btn.ghost:hover{ border-color:var(--paper-dim); }
+
+  /* API response card */
+  .api-card{
+    background:var(--ink-soft);
+    border:1px solid var(--line-strong);
+    border-radius:6px;
+    overflow:hidden;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.82rem;
+  }
+  .api-card .bar{
+    display:flex; align-items:center; gap:8px;
+    padding:10px 14px;
+    border-bottom:1px solid var(--line);
+    color:var(--paper-dim);
+  }
+  .api-card .bar .req{ color:var(--teal); font-weight:600; }
+  .api-card pre{
+    padding:18px 16px 20px;
+    overflow-x:auto;
+    color:var(--paper);
+  }
+  .api-card .status{ color:var(--teal); }
+  .api-card .key{ color:#9FC9E8; }
+  .api-card .str{ color:var(--amber); }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{ padding:64px 0; border-bottom:1px solid var(--line); }
+  .section-head{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:36px; flex-wrap:wrap; gap:10px; }
+  .section-head h2{ font-size:1.5rem; }
+  .section-tag{ font-family:'JetBrains Mono', monospace; font-size:0.78rem; color:var(--paper-dim); }
+
+  /* ---------- PROJECT / ENDPOINT CARDS ---------- */
+  .endpoint{
+    border:1px solid var(--line-strong);
+    border-radius:6px;
+    margin-bottom:22px;
+    overflow:hidden;
+    background:var(--ink-soft);
+  }
+  .endpoint-head{
+    display:flex; align-items:center; gap:14px;
+    padding:16px 20px;
+    border-bottom:1px solid var(--line);
+    flex-wrap:wrap;
+  }
+  .method{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.76rem; font-weight:700;
+    padding:4px 9px;
+    border-radius:3px;
+    letter-spacing:0.02em;
+  }
+  .method.post{ background:rgba(232,162,61,0.15); color:var(--amber); border:1px solid rgba(232,162,61,0.35); }
+  .method.get{ background:rgba(95,179,163,0.15); color:var(--teal); border:1px solid rgba(95,179,163,0.35); }
+  .route{ font-family:'JetBrains Mono', monospace; font-size:0.92rem; color:var(--paper); }
+  .endpoint-title{ margin-left:auto; font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:1.02rem; color:var(--paper-dim); }
+
+  .endpoint-body{ padding:22px 20px 24px; }
+  .endpoint-body p.summary{ color:var(--paper-dim); margin-bottom:16px; max-width:64ch; }
+
+  .kv-list{ display:grid; gap:9px; margin-bottom:18px; }
+  .kv-list .row{ display:flex; gap:10px; font-size:0.92rem; }
+  .kv-list .row .label{ font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:var(--teal); text-transform:uppercase; letter-spacing:0.04em; width:92px; flex-shrink:0; padding-top:2px; }
+  .kv-list .row .val{ color:var(--paper); }
+
+  .tags{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+  .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    color:var(--paper-dim);
+    border:1px solid var(--line-strong);
+    padding:4px 9px;
+    border-radius:3px;
+  }
+
+  .endpoint-links{ display:flex; gap:16px; font-family:'JetBrains Mono', monospace; font-size:0.8rem; }
+  .endpoint-links a{ color:var(--teal); border-bottom:1px solid rgba(95,179,163,0.4); padding-bottom:1px; }
+  .endpoint-links a:hover{ border-color:var(--teal); }
+  .endpoint-links .placeholder{ color:var(--paper-dim); border-bottom:1px dashed var(--line-strong); }
+
+  /* ---------- SKILLS ---------- */
+  .skills-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:24px 40px; }
+  @media (max-width:640px){ .skills-grid{ grid-template-columns:1fr; } }
+  .skill-group .label{
+    font-family:'JetBrains Mono', monospace; font-size:0.75rem; color:var(--teal);
+    text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px;
+  }
+  .skill-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    font-size:0.86rem; padding:6px 12px; border-radius:20px;
+    border:1px solid var(--line-strong); color:var(--paper);
+    background:var(--ink-soft);
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact{ padding:70px 0 90px; }
+  .contact-card{
+    background:var(--ink-soft);
+    border:1px solid var(--line-strong);
+    border-radius:8px;
+    padding:44px;
+    text-align:center;
+  }
+  @media (max-width:640px){ .contact-card{ padding:32px 22px; } }
+  .contact h2{ font-size:1.7rem; margin-bottom:12px; }
+  .contact p{ color:var(--paper-dim); margin-bottom:26px; }
+  .contact-links{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+  .contact-plain{ margin-top:22px; font-size:0.85rem; color:var(--paper-dim); }
+
+  footer{ padding:26px 0 40px; text-align:center; color:var(--paper-dim); font-family:'JetBrains Mono', monospace; font-size:0.78rem; }
+
+  @media (prefers-reduced-motion: reduce){ *{ scroll-behavior:auto !important; transition:none !important; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="navlinks">
+      <a href="#projects">projects</a>
+      <a href="#skills">skills</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>AVAILABLE FOR FREELANCE WORK</div>
+      <h1>Backend systems that don't let bad data or bad actors through.</h1>
+      <p class="lede">I design and build secure REST APIs — authentication, authorization, and data modeling — using Node.js, Express, and MongoDB. Four applications built and deployed end to end.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="#contact">Get in touch →</a>
+        <a class="btn ghost" href="https://github.com/fahad-sh145-b" target="_blank" rel="noopener">View GitHub</a>
+      </div>
+    </div>
+
+    <div class="api-card">
+      <div class="bar"><span class="req">GET</span> /developer</div>
+      <pre><span class="status">200 OK</span>
+
+{
+  <span class="key">"name"</span>: <span class="str">"Shaikh Bashiruddin"</span>,
+  <span class="key">"role"</span>: <span class="str">"Backend Developer"</span>,
+  <span class="key">"location"</span>: <span class="str">"Mumbai, India"</span>,
+  <span class="key">"stack"</span>: [
+    <span class="str">"Node.js"</span>, <span class="str">"Express"</span>,
+    <span class="str">"MongoDB"</span>, <span class="str">"JWT"</span>
+  ],
+  <span class="key">"projects_shipped"</span>: 4,
+  <span class="key">"open_to_work"</span>: true
+}</pre>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Selected work</h2>
+      <span class="section-tag">3 of 4 projects — endpoints documented below</span>
+    </div>
+
+    <!-- Voting App -->
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method post">POST</span>
+        <span class="route">/api/votes</span>
+        <span class="endpoint-title">Voting Platform</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="summary">A secure online voting system where every registered voter can cast exactly one vote per election — no duplicates, no unauthorized submissions, no tampering with results after the fact.</p>
+        <div class="kv-list">
+          <div class="row"><span class="label">Problem</span><span class="val">Elections need to guarantee one-person-one-vote without letting admins or outsiders alter outcomes.</span></div>
+          <div class="row"><span class="label">Approach</span><span class="val">Role-based authorization (voter / admin) with JWT, so vote-casting routes are only reachable by verified, unvoted users; bcrypt-hashed credentials protect accounts.</span></div>
+          <div class="row"><span class="label">Data model</span><span class="val">Separate schemas for candidates, elections, and votes, with a vote record tied to a unique user–election pair to enforce the single-vote rule at the database level.</span></div>
+          <div class="row"><span class="label">Result</span><span class="val">Fully tested REST API (Postman) for candidates, elections, and voting, deployed live on Render.</span></div>
+        </div>
+        <div class="tags">
+          <span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">MongoDB</span><span class="tag">JWT</span><span class="tag">bcrypt</span><span class="tag">Postman</span>
+        </div>
+        <div class="endpoint-links">
+          <a href="https://github.com/fahad-sh145-b" target="_blank" rel="noopener">View source →</a>
+          <a href="https://voting-3-4hbk.onrender.com/" target="_blank" rel="noopener">Live demo →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- E-Commerce -->
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method post">POST</span>
+        <span class="route">/api/orders</span>
+        <span class="endpoint-title">E-Commerce Backend</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="summary">The backend for a full e-commerce flow — products, cart, checkout, and user accounts — built as a set of REST APIs a frontend or mobile app could plug straight into.</p>
+        <div class="kv-list">
+          <div class="row"><span class="label">Problem</span><span class="val">An online store needs products, carts, and orders to stay consistent per-user while keeping accounts and checkout secure.</span></div>
+          <div class="row"><span class="label">Approach</span><span class="val">JWT-based auth on every cart/order route, with bcrypt password hashing so credentials are never stored in plain text.</span></div>
+          <div class="row"><span class="label">Data model</span><span class="val">Product, order, and user schemas in MongoDB designed to keep cart state and order history properly linked to each account.</span></div>
+          <div class="row"><span class="label">Result</span><span class="val">Every route validated in Postman before deployment; live on Render.</span></div>
+        </div>
+        <div class="tags">
+          <span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">MongoDB</span><span class="tag">JWT</span><span class="tag">bcrypt</span><span class="tag">Postman</span>
+        </div>
+        <div class="endpoint-links">
+          <a href="https://github.com/fahad-sh145-b" target="_blank" rel="noopener">View source →</a>
+          <a href="https://e-commerce-1-58li.onrender.com/" target="_blank" rel="noopener">Live demo →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real-Time Chat App -->
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method post">POST</span>
+        <span class="route">/api/messages</span>
+        <span class="endpoint-title">Real-Time Chat App</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="summary">A real-time messaging application with secure login and protected chat routes, so conversations and messages are only reachable by the users who belong to them.</p>
+        <div class="kv-list">
+          <div class="row"><span class="label">Problem</span><span class="val">A messaging app needs to keep sessions secure and make sure only participants in a conversation can read or send its messages.</span></div>
+          <div class="row"><span class="label">Approach</span><span class="val">JWT-based authentication protecting every chat route, with bcrypt password hashing to keep user sessions secure.</span></div>
+          <div class="row"><span class="label">Data model</span><span class="val">MongoDB schemas for users, conversations, and messages, structured to keep each conversation's messages scoped to its participants.</span></div>
+          <div class="row"><span class="label">Result</span><span class="val">All endpoints tested in Postman and deployed live on Render.</span></div>
+        </div>
+        <div class="tags">
+          <span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">MongoDB</span><span class="tag">JWT</span><span class="tag">bcrypt</span><span class="tag">Postman</span>
+        </div>
+        <div class="endpoint-links">
+          <a href="https://github.com/fahad-sh145-b/real-time-chat" target="_blank" rel="noopener">View source →</a>
+          <a href="https://real-time-chat-x3x6.onrender.com/" target="_blank" rel="noopener">Live demo →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Skills</h2>
+      <span class="section-tag">languages, frameworks, tools</span>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="label">Languages & Web</div>
+        <div class="skill-chips">
+          <span class="chip">JavaScript</span><span class="chip">HTML</span><span class="chip">CSS</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="label">Backend</div>
+        <div class="skill-chips">
+          <span class="chip">Node.js</span><span class="chip">Express.js</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="label">Databases</div>
+        <div class="skill-chips">
+          <span class="chip">MongoDB</span><span class="chip">MySQL</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="label">Auth & Security</div>
+        <div class="skill-chips">
+          <span class="chip">JWT</span><span class="chip">bcrypt</span><span class="chip">Role-based access</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="label">Tools & Platforms</div>
+        <div class="skill-chips">
+          <span class="chip">Postman</span><span class="chip">Git / GitHub</span><span class="chip">VS Code</span><span class="chip">Render</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="contact-card">
+      <h2>Need a backend built or secured?</h2>
+      <p>Open to freelance projects — API development, authentication systems, and database design.</p>
+      <div class="contact-links">
+        <a class="btn primary" href="mailto:shaikhbashiruddinmohdhajishaik@gmail.com">Email me →</a>
+        <a class="btn ghost" href="tel:+917738960166">Call: 7738960166</a>
+        <a class="btn ghost" href="https://github.com/fahad-sh145-b" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <p class="contact-plain mono">shaikhbashiruddinmohdhajishaik@gmail.com &nbsp;·&nbsp; +91 77389 60166</p>
+    </div>
+  </div>
+</section>
+
+<footer>Built by Shaikh Bashiruddin · Mumbai, India</footer>
+
+</body>
+</html>
